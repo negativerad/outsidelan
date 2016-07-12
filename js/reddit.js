@@ -4,8 +4,8 @@ Accessing the Reddit JSON
 Requires jQuery
 
 Features to add:
-	addEventListener for clicking on www.reddit.com urls to load JSON in #divPost.
-	addEventListener for clicking for images to lightbox
+  addEventListener for clicking on www.reddit.com urls to load JSON in #divPost.
+  addEventListener for clicking for images to lightbox
   non reddit.com, and image urls should open a new window
   IDK maybe show comments?
 
@@ -32,39 +32,39 @@ function searchArrayByString(arr, str) {
 }
 
 function mdLF(html) {
-	var tmp = /(?:\r\n|\r|\n)/g;
-	divPost.innerHTML=divPost.innerHTML.replace(tmp, "<br />");
+  var tmp = /(?:\r\n|\r|\n)/g;
+  divPost.innerHTML=divPost.innerHTML.replace(tmp, "<br />");
 }
 
 function mdStrong(html) {
-	var tmp = /\*\*(.+?)\*\*/g;
-	divPost.innerHTML=divPost.innerHTML.replace(tmp, "<strong>$1</strong>");
+  var tmp = /\*\*(.+?)\*\*/g;
+  divPost.innerHTML=divPost.innerHTML.replace(tmp, "<strong>$1</strong>");
 }
 
 function mdLinks(html) {
-	var tmp = /\[(.+?)]\((.+?)\)/g;
-	divPost.innerHTML=divPost.innerHTML.replace(tmp, "<a href='$2'>$1</a>");
+  var tmp = /\[(.+?)]\((.+?)\)/g;
+  divPost.innerHTML=divPost.innerHTML.replace(tmp, "<a href='$2'>$1</a>");
 }
 
 function mdImg(html) {
-	var tmp = /https?:\/\/.*?\.(?:png|jpg|jpeg|gif)/ig;
-	divPost.innerHTML=divPost.innerHTML.replace(tmp,'<img src="$&"/>');
+  var tmp = /https?:\/\/.*?\.(?:png|jpg|jpeg|gif)/ig;
+  divPost.innerHTML=divPost.innerHTML.replace(tmp,'<img src="$&"/>');
 }
 
 function mdYoutube(html) {
-	var tmp = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
-	divPost.innerHTML=divPost.innerHTML.replace(tmp, '<iframe width="420" height="345" src="http://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>');
+  var tmp = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
+  divPost.innerHTML=divPost.innerHTML.replace(tmp, '<iframe width="420" height="345" src="http://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>');
 }
 
 function renderPost(url, postTitle, postBody) {
-	var html = postBody;
+  var html = postBody;
   divPost.innerHTML = '<h1><a href="' + url + '">' + postTitle + '</a></h1>' + html ;
-	mdYoutube(html);
-	mdImg(html);
-	mdLinks(html);
-	mdStrong(html);
-	mdLF(html);
-	mdLF(html);
+  mdYoutube(html);
+  mdImg(html);
+  mdLinks(html);
+  mdStrong(html);
+  mdLF(html);
+  mdLF(html);
 }
 
 function renderSubreddit(links, titles, permalinks, numberOfComments, authors, imgs) {
