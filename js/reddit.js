@@ -31,8 +31,40 @@ function searchArrayByString(arr, str) {
   return -1;
 }
 
+function mdLF(html) {
+	var tmp = /(?:\r\n|\r|\n)/g;
+	divPost.innerHTML=divPost.innerHTML.replace(tmp, "<br />");
+}
+
+function mdStrong(html) {
+	var tmp = /\*\*(.+?)\*\*/g;
+	divPost.innerHTML=divPost.innerHTML.replace(tmp, "<strong>$1</strong>");
+}
+
+function mdLinks(html) {
+	var tmp = /\[(.+?)]\((.+?)\)/g;
+	divPost.innerHTML=divPost.innerHTML.replace(tmp, "<a href='$2'>$1</a>");
+}
+
+function mdImg(html) {
+	var tmp = /https?:\/\/.*?\.(?:png|jpg|jpeg|gif)/ig;
+	divPost.innerHTML=divPost.innerHTML.replace(tmp,'<img src="$&"/>');
+}
+
+function mdYoutube(html) {
+	var tmp = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
+	divPost.innerHTML=divPost.innerHTML.replace(tmp, '<iframe width="420" height="345" src="http://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>');
+}
+
 function renderPost(url, postTitle, postBody) {
-  divPost.innerHTML = '<h1><a href="' + url + '">' + postTitle + '</a></h1>' + postBody + '';
+	var html = postBody;
+  divPost.innerHTML = '<h1><a href="' + url + '">' + postTitle + '</a></h1>' + html ;
+	mdYoutube(html);
+	mdImg(html);
+	mdLinks(html);
+	mdStrong(html);
+	mdLF(html);
+	mdLF(html);
 }
 
 function renderSubreddit(links, titles, permalinks, numberOfComments, authors, imgs) {
@@ -96,7 +128,7 @@ function fetchPost(url) {
       .then(function(json) {
         // Fetch post data
         var postTitle = json[0].data.children[0].data.title;
-        var postBody = $("<div/>").html(json[0].data.children[0].data.selftext_html).text();
+        var postBody = $("<div/>").html(json[0].data.children[0].data.selftext).text();
         // Render post
         renderPost(url, postTitle, postBody);
       })
