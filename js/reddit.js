@@ -38,7 +38,7 @@ function mdLF(html) {
 
 function mdStrong(html) {
   var tmp = /\*\*(.+?)\*\*/g;
-  divPost.innerHTML=divPost.innerHTML.replace(tmp, "<strong>$1</strong>");
+  divPost.innerHTML=divPost.innerHTML.replace(tmp, "<h2>$1</h2>");
 }
 
 function mdLinks(html) {
@@ -56,19 +56,24 @@ function mdYoutube(html) {
   divPost.innerHTML=divPost.innerHTML.replace(tmp, '<iframe width="420" height="345" src="http://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>');
 }
 
+function mdLinkO(html) {
+  var tmp = /\[(.+?)]\((.+?)\)/g;
+  divPost.innerHTML=divPost.innerHTML.replace(tmp, "<a class=\"btn\" href=\"$2\" data-scrollto=\"overview\">$1<i class=\"fa fa-external-link\"></i></a>");
+}
+
 function renderPost(url, postTitle, postBody) {
   var html = postBody;
-  divPost.innerHTML = '<h1><a href="' + url + '">' + postTitle + '</a></h1>' + html ;
+  divPost.innerHTML = '<h1>' + postTitle + '</h1>' + '<h2>' + html +'</h2>';
   mdYoutube(html);
   mdImg(html);
-  mdLinks(html);
+  mdLinkO(html);
   mdStrong(html);
   mdLF(html);
   mdLF(html);
 }
 
 function renderSubreddit(links, titles, permalinks, numberOfComments, authors, imgs) {
-  var html = '<h2>Recent Activity</h2>';
+  var html = '';
   // set first reddit post ID
   var firstPostId = searchArrayByString(links, "www.reddit.com");
   // Fetch post
@@ -80,16 +85,19 @@ function renderSubreddit(links, titles, permalinks, numberOfComments, authors, i
   // i set to 1 instead of 0;
   // we don't want first post in list
   for (var i = 1, len = links.length; i < len; i++) {
-    html += '<div class="entry">';
-    html += '<img src="' + imgs[i] + '">';
+//    html += '<i class="fa fa-heart-o"></i>';
+//    html += '<li><img src="' + imgs[i] + '"">';
+    html += '<li>';
+    html += '<i class="fa fa-reddit"></i>';
+    html += '<h3>';
     html += '<a href="' + links[i] + '" class="redditLinks" target="_blank">' + titles[i] + '</a>';
-    html += '<div class="subEntry">';
-    html += '<a class="redditComments" href="https://www.reddit.com' + permalinks[i] + '" target="_blank">[' +
-      numberOfComments[i] + ' comments]</a> ';
-    html += 'posted by <a class="redditAuthors" href="https://www.reddit.com/user/' + authors[i] + '" target="_blank">' + authors[i] + '</a>';
-    html += '</div></div>';
+    html += '</h3>';
+    html += '<p>';
+    html += '<a class="redditComments" href="https://www.reddit.com' + permalinks[i] + '" target="_blank">' +
+      numberOfComments[i] + ' comments</a> ';
+    html += '</p></li>';
   }
-  divLinks.innerHTML = '<div>' + html + '</div>';
+  divLinks.innerHTML = '<div><h1>Activity</h1><p>Latest posts from the community.</p><ul>' + html + '</ul></div>';
 }
 
 function fetchSubreddit(r) {
